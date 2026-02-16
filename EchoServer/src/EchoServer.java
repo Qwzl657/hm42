@@ -16,7 +16,9 @@ public class EchoServer {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                System.out.println("Client connected: " + socket);
+
+                ClientHandler client = new ClientHandler(socket);
+                new Thread(client).start();
             }
 
         } catch (IOException e) {
