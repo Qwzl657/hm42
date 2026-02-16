@@ -1,3 +1,4 @@
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
@@ -10,6 +11,17 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client handler started: " + socket);
+        try (
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream()))
+        ) {
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.println("Message: " + line);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Client disconnected");
+        }
     }
 }
