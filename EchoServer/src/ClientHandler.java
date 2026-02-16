@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.Random;
 
 public class ClientHandler implements Runnable {
 
     private final Socket socket;
     private final EchoServer server;
     private PrintWriter out;
+    private final String name = generateName();
 
     public ClientHandler(Socket socket, EchoServer server) {
         this.socket = socket;
@@ -20,13 +22,15 @@ public class ClientHandler implements Runnable {
         ) {
             out = new PrintWriter(socket.getOutputStream(), true);
 
+            out.println("Your name: " + name);
+
             String line;
             while ((line = in.readLine()) != null) {
-                server.broadcast(line, this);
+                server.broadcast(name + ": " + line, this);
             }
 
         } catch (IOException e) {
-            System.out.println("Client disconnected");
+            System.out.println("Client disconnected: " + name);
         } finally {
             close();
         }
@@ -44,5 +48,10 @@ public class ClientHandler implements Runnable {
         } catch (IOException ignored) {}
 
         server.removeClient(this);
+    }
+
+    private String generateName() {
+        Random random = new Random();
+        return "User" + (1000 + random.nextInt(9000));
     }
 }
