@@ -7,9 +7,11 @@ import java.util.Scanner;
 public class ClientHandler implements Runnable {
 
     private final Socket socket;
+    private final EchoServer server;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, EchoServer server) {
         this.socket = socket;
+        this.server = server;
     }
 
     @Override

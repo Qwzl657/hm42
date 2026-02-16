@@ -28,7 +28,7 @@ public class EchoServer {
                 Socket socket = server.accept();
 
                 ClientHandler handler =
-                        new ClientHandler(socket);
+                        new ClientHandler(socket, this);
 
                 pool.submit(handler);
             }
